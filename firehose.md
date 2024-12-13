@@ -1,0 +1,60 @@
+## Firehose of Falsehood
+
+### Introducere
+
+"Furtunul de minciuni" (în engleză: *firehose of falsehood*), cunoscut și sub denumirea de "firehosing," este o tehnică de propagandă în care un număr mare de mesaje sunt difuzate rapid, repetitiv și continuu pe mai multe canale (precum știri și rețele sociale), fără a ține cont de adevăr sau coerență. Dezvoltată din tehnici de propagandă sovietice, "furtunul de minciuni" este un model contemporan pentru propaganda rusă sub conducerea președintelui rus Vladimir Putin.
+
+Guvernul rus a folosit această tehnică în timpul ofensivei sale împotriva Georgiei în 2008 și în războiul cu Ucraina, început în 2014 cu anexarea Crimeei. De asemenea, a continuat să o utilizeze în perioada premergătoare invaziei rusești în Ucraina din 2021. Această metodă a fost folosită și în cadrul interferenței în alegerile din Statele Unite din 2016, fiind în mare parte facilitată de repetarea falsurilor rusești de către Donald Trump, care a făcut din minciuna constantă o parte cheie a strategiei sale de comunicare. Politicieni, guverne și mișcări din alte țări au adoptat ulterior aceleași tactici.
+
+Deși dificil de contracarat, German Marshall Fund, RAND și strategi militari au descris tehnici pentru a răspunde la "furtunul de minciuni", implicând, în general, anticiparea cu informații corecte, reducerea strategică sau eliminarea dezinformării și predarea alfabetizării digitale.
+
+---
+
+### Caracteristici
+
+Corporatia RAND a inventat termenul *firehose of falsehood* în 2016, descriind o tehnică observată în propaganda rusă care combină un număr foarte mare de comunicări și o lipsă de respect pentru adevăr. Este parțial distinctă de tehnicile de propagandă sovietice mai vechi utilizate în timpul Războiului Rece prin cantitatea mult mai mare de mesaje și canale facilitate de apariția internetului și de schimbările în modul în care oamenii consumă informații de știri.
+
+Conform cercetărilor publicate în *Frontiers in Political Science*:
+
+> "Când liderii folosesc un furtun de minciuni, cetățenii se retrag în cinism și în credința că adevărul este fundamental de necunoscut. Dacă adevărul este de necunoscut, dezbaterea rațională devine inutilă, deoarece nu există fapte convenite. ... Când discursul democratic rațional nu este posibil din cauza lipsei de fapte convenite, tot ceea ce rămâne este exercitarea politică a puterii brute."
+
+Utilizarea tehnicii "furtunului de minciuni" s-a dovedit a fi "în concordanță cu cercetările în psihologia politică care arată că incertitudinea epistemică și existențială motivează adoptarea convingerilor conservatoare și autoritare."
+
+#### Factori distinctivi
+
+Conform RAND, modelul "furtunului de minciuni" are patru factori distinctivi:
+
+- **Este de volum mare și multicanal.**
+- **Este rapidă, continuă și repetitivă.**
+- **Nu are un angajament față de realitatea obiectivă.**
+- **Nu are angajament față de consistență.**
+
+Volumul mare de mesaje, utilizarea mai multor canale și utilizarea roboților de internet și a conturilor false sunt eficiente, deoarece oamenii sunt mai predispuși să creadă o poveste atunci când pare că a fost raportată de mai multe surse. De exemplu, pe lângă sursa de știri recunoscută ca fiind rusă, RT, Rusia diseminează propagandă folosind zeci de site-uri proxy a căror legătură cu RT este "mascată sau minimalizată." Oamenii sunt, de asemenea, mai predispuși să creadă o poveste atunci când cred că mulți alții o cred, mai ales dacă aceștia fac parte dintr-un grup cu care se identifică. Astfel, un grup de operatori poate influența opinia unei persoane creând impresia falsă că majoritatea vecinilor acelei persoane sprijină un anumit punct de vedere.
+
+---
+
+### Campanii
+
+Guvernul rus a utilizat "furtunul de minciuni" cel puțin încă din ofensiva sa împotriva Georgiei în 2008. A continuat să o folosească în războiul său cu Ucraina, inclusiv în anexarea Crimeei și în perioada premergătoare invaziei rusești în Ucraina. Au existat, de asemenea, campanii rusești care vizează alte state post-sovietice din "vecinătatea apropiată" și cele trei state baltice - Lituania, Letonia și Estonia. "Firehosing" a fost, de asemenea, o caracteristică a campaniilor de dezinformare rusești care au vizat Europa de Vest și Statele Unite, inclusiv ca parte a interferenței în alegerile din 2016 din Statele Unite. În 2019, conform scriitorului științific William J. Broad de la *The New York Times*, rețeaua de propagandă RT America a început o campanie "furtun al minciunilor" pentru a convinge americanii că telefoanele 5G reprezintă un pericol pentru sănătate, în timp ce Putin ordona lansarea rețelelor 5G în Rusia.
+
+Conform autorului și fostului ofițer de informații militare John Loftus, Iranul a folosit metode similare pentru a incita la ură împotriva Arabiei Saudite, Statelor Unite și Israelului. El susține că unele știri false atribuite Rusiei au fost de fapt plantate în presa occidentală de Iran. În timpul alegerilor prezidențiale din 2019 din Indonezia, actualul președinte, Joko Widodo, a acuzat echipa de campanie a lui Prabowo Subianto de răspândirea propagandei pline de ură cu ajutorul consultanților străini și a menționat "propaganda rusă" și modelul "furtunului de minciuni."
+
+Conform redactorului revistei *Mother Jones*, Monika Bauerlein, tehnica "furtunului" este utilizată din ce în ce mai mult împotriva presei de către politicienii americani. Ea avertizează cititorii să se aștepte la o creștere a utilizării mai multor tactici conexe: amenințarea cu procese, negarea "știrilor false" și atacurile *ad hominem*.
+
+Mai multe publicații au caracterizat strategia de comunicare a lui Donald Trump ca fiind un "furtun al minciunilor." Utilizarea acestei tehnici de către Trump în timpul dezbaterii din 27 iunie 2024, transmisă de CNN, a fost observată de analiști precum Heather Cox Richardson, care a etichetat prestația lui Trump drept "Gish Galloping", și Dan Froomkin, care a oferit nu doar analiza sa, ci și pe cea a multora alții. Tehnica a fost utilizată și de activiști, precum mișcarea antivaccin, pentru a răspândi teorii infirmate despre presupusele pericole ale vaccinării. Conform companiei de securitate cibernetică Recorded Future, tehnica a fost folosită de guvernul chinez pentru a submina credibilitatea BBC ca răspuns la raportările BBC despre persecuția uigurilor din China.
+
+---
+
+### Contramăsuri
+
+Eforturile convenționale de contracarare a propagandei sunt ineficiente împotriva acestei tehnici. După cum au spus cercetătorii de la RAND:
+
+> "Nu vă așteptați să contracarați furtunul de minciuni cu pistolul cu apă al adevărului."
+
+Ei sugerează:
+
+- repetarea contra-informațiilor
+- furnizarea unei alternative narative pentru a completa golurile lăsate de îndepărtarea "faptelor" false
+- avertizarea oamenilor despre propagandă, evidențiind modalitățile prin care propagandiștii manipulează opinia publică
+- contracararea efectelor propagandei, mai degrabă decât a propagandei în sine; de exemplu, pentru a contracara propaganda care subminează sprijinul pentru o cauză, să se lucreze la
+
