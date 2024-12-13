@@ -1,4 +1,16 @@
-## Firehose of Falsehood
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Marked in the browser</title>
+</head>
+<body>
+  <div id="content"></div>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    document.getElementById('content').innerHTML =
+      marked.parse(`
+      ## Firehose of Falsehood
 
 ### Introducere
 
@@ -57,4 +69,10 @@ Ei sugerează:
 - furnizarea unei alternative narative pentru a completa golurile lăsate de îndepărtarea "faptelor" false
 - avertizarea oamenilor despre propagandă, evidențiind modalitățile prin care propagandiștii manipulează opinia publică
 - contracararea efectelor propagandei, mai degrabă decât a propagandei în sine; de exemplu, pentru a contracara propaganda care subminează sprijinul pentru o cauză, să se lucreze la
+
+
+      `);
+  </script>
+</body>
+</html>
 
