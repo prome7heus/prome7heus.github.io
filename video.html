@@ -29,7 +29,9 @@
   </head>
   <body>
     <video controls autoplay>
-      <source src="#" type="video/mp4" />
+      <source id="videoSrc" type="video/mp4" />
+      <audio id="audioSrc" controls></audio>
+
       Your browser does not support the video tag.
     </video>
     <div id="get-url">
@@ -40,19 +42,54 @@
     <script type="text/javascript">
       // when page loads, get the url after # and set it as the video source
       window.onload = function () {
-        const url = window.location.href;
-        const video = document.querySelector("video");
-        const videoSrc = url.split("#")[1];
+        const videoSrc = window.location.hash;
 
         if (!videoSrc) {
           const input = document.querySelector("#get-url");
           input.style.display = "block";
-          return;
+        } else {
+          showVideo();
+        }
+      };
+
+      function showVideo() {
+        const video = document.querySelector("video");
+
+        if (isSafari()) {
+          // the workaround for safari not working is to have separate audio and video tags
+          const video = document.querySelector("video");
+          const audio = document.querySelector("audio");
+          video.onplay = function () {
+            audio.play();
+          };
+          video.onpause = function () {
+            audio.pause();
+          };
+
+          const streamId = findComponent("s", window.location.hash);
+          const videoUrl = redditVideoUrl(
+            streamId,
+            findComponent("v", window.location.hash)
+          );
+          const audioUrl = redditAudioUrl(
+            streamId,
+            findComponent("a", window.location.hash)
+          );
+
+          const videoSrc = document.querySelector("#videoSrc");
+          const audioSrc = document.querySelector("#audioSrc");
+
+          videoSrc.src = videoUrl;
+          audioSrc.src = audioUrl;
+
+          video.play();
+        } else {
+          // normal browsers...
+          video.src = decodeUrl(videoSrc);
         }
 
-        video.src = decodeUrl(videoSrc);
         video.style.display = "block";
-      };
+      }
 
       function onButtonClick() {
         const url = document.querySelector("input").value;
@@ -68,6 +105,9 @@
         `https://v.redd.it/${id}/DASH_AUDIO_${qual}.mp4`;
       const rapidSaveUrl = (permalink, videoUrl, audioUrl) =>
         `https://sd.rapidsave.com/download.php?permalink=${permalink}&video_url=${videoUrl}&audio_url=${audioUrl}`;
+
+      const isSafari = () =>
+        navigator.userAgent.toLowerCase().indexOf("safari") > -1;
 
       function encodeUrl(url) {
         const { redditId, streamId, videoVariant, audioVariant } =
@@ -123,6 +163,10 @@
       }
 
       function findComponent(component, encodedUrl) {
+        if (encodedUrl.startsWith("#")) {
+          encodedUrl = encodedUrl.slice(1);
+        }
+
         const split = encodedUrl.split(",");
         const found = split.find((s) => s.startsWith(component));
         return found.split(":")[1];
