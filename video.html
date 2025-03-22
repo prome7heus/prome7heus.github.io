@@ -85,7 +85,7 @@
           video.play();
         } else {
           // normal browsers...
-          video.src = decodeUrl(videoSrc);
+          video.src = decodeUrl(window.location.hash);
         }
 
         video.style.display = "block";
@@ -184,9 +184,6 @@
 
         return rapidSaveUrl(redditUrl, videoUrl, audioUrl);
       }
-
-      const url =
-        "https://sd.rapidsave.com/download.php?permalink=https://reddit.com/r/Romania/comments/1jhbn63/radu_banciu_spune_ca_nicusor_dan_este_singura/&video_url=https://v.redd.it/6lja8xx0k9qe1/DASH_480.mp4?source=fallback&audio_url=https://v.redd.it/6lja8xx0k9qe1/DASH_AUDIO_128.mp4";
     </script>
   </body>
 </html>
