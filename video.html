@@ -7,6 +7,7 @@
     <style>
       body {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 100vh;
@@ -15,25 +16,130 @@
       }
 
       video {
-        width: 90%;
-        height: 90%;
+        width: 100%;
+        height: 100%;
+        display: none;
+        margin: 1rem;
+      }
+
+      #get-url {
+        display: none;
       }
     </style>
   </head>
   <body>
-    <video controls>
+    <video controls autoplay>
       <source src="#" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
+    <div id="get-url">
+      <input type="text" id="url" placeholder="Enter video URL" />
+      <button onclick="onButtonClick()">Watch</button>
+    </div>
+
     <script type="text/javascript">
       // when page loads, get the url after # and set it as the video source
       window.onload = function () {
-        var url = window.location.href;
-        var video = document.querySelector("video");
-        video.src = url.split("#").pop();
+        const url = window.location.href;
+        const video = document.querySelector("video");
+        const videoSrc = url.split("#")[1];
 
-        console.log(window.location.href.split("#").pop());
+        if (!videoSrc) {
+          const input = document.querySelector("#get-url");
+          input.style.display = "block";
+          return;
+        }
+
+        video.src = decodeUrl(videoSrc);
+        video.style.display = "block";
       };
+
+      function onButtonClick() {
+        const url = document.querySelector("input").value;
+        const encodedUrl = encodeUrl(url);
+        window.location.hash = encodedUrl;
+        window.location.reload();
+      }
+
+      const redditShortUrl = (id) => `https://reddit.com/${id}/`;
+      const redditVideoUrl = (id, qual) =>
+        `https://v.redd.it/${id}/DASH_${qual}.mp4`;
+      const redditAudioUrl = (id, qual) =>
+        `https://v.redd.it/${id}/DASH_AUDIO_${qual}.mp4`;
+      const rapidSaveUrl = (permalink, videoUrl, audioUrl) =>
+        `https://sd.rapidsave.com/download.php?permalink=${permalink}&video_url=${videoUrl}&audio_url=${audioUrl}`;
+
+      function encodeUrl(url) {
+        const { redditId, streamId, videoVariant, audioVariant } =
+          getLinkData(url);
+        const encodedUrl = `r:${redditId},s:${streamId},v:${videoVariant},a:${audioVariant}`;
+        return encodedUrl;
+      }
+
+      function getRedditPostId(redditUrl) {
+        const id = url.match(/comments\/([a-z0-9]+)\//)[1];
+        return id;
+      }
+
+      function getRedditStreamId(redditUrl) {
+        const url = new URL(redditUrl);
+        const id = url.pathname.split("/")[1];
+        return id;
+      }
+
+      function getRedditStreamVariant(redditUrl) {
+        const url = new URL(redditUrl);
+        const filename = url.pathname.split("/").pop();
+        // get the quality from the filename
+        const quality = filename.split("_").pop().split(".")[0];
+        return quality;
+      }
+
+      function getLinkData(link) {
+        const url = new URL(link);
+        const host = url.host;
+
+        if (host.includes("rapidsave.com")) {
+          const urlParams = new URLSearchParams(link);
+          const redditId = getRedditPostId(urlParams.get("permalink"));
+          const videoUrl = urlParams.get("video_url");
+          const audioUrl = urlParams.get("audio_url");
+
+          const streamId = getRedditStreamId(videoUrl);
+          const videoVariant = getRedditStreamVariant(videoUrl);
+          const audioVariant = getRedditStreamVariant(audioUrl);
+
+          return {
+            redditId,
+            videoUrl,
+            audioUrl,
+            streamId,
+            videoVariant,
+            audioVariant,
+          };
+        }
+
+        return link;
+      }
+
+      function findComponent(component, encodedUrl) {
+        const split = encodedUrl.split(",");
+        const found = split.find((s) => s.startsWith(component));
+        return found.split(":")[1];
+      }
+
+      function decodeUrl(encodedUrl) {
+        const redditId = findComponent("r", encodedUrl);
+        const streamId = findComponent("s", encodedUrl);
+        const videoVariant = findComponent("v", encodedUrl);
+        const audioVariant = findComponent("a", encodedUrl);
+
+        const redditUrl = redditShortUrl(redditId);
+        const videoUrl = redditVideoUrl(streamId, videoVariant);
+        const audioUrl = redditAudioUrl(streamId, audioVariant);
+
+        return rapidSaveUrl(redditUrl, videoUrl, audioUrl);
+      }
     </script>
   </body>
 </html>
