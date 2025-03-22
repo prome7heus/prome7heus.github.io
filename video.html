@@ -100,7 +100,7 @@
         const host = url.host;
 
         if (host.includes("rapidsave.com")) {
-          const urlParams = new URLSearchParams(link);
+          const urlParams = url.searchParams;
           const redditId = getRedditPostId(urlParams.get("permalink"));
           const videoUrl = urlParams.get("video_url");
           const audioUrl = urlParams.get("audio_url");
