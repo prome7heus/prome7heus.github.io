@@ -77,7 +77,7 @@
       }
 
       function getRedditPostId(redditUrl) {
-        const id = url.match(/comments\/([a-z0-9]+)\//)[1];
+        const id = url.match(/comments\/([a-z0-9]+)\/.*/)[1];
         return id;
       }
 
