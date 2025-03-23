@@ -57,14 +57,7 @@
 
         if (isSafari()) {
           // the workaround for safari not working is to have separate audio and video tags
-          const video = document.querySelector("video");
-          const audio = document.querySelector("audio");
-          video.onplay = function () {
-            audio.play();
-          };
-          video.onpause = function () {
-            audio.pause();
-          };
+          setupVideoPlayer();
 
           const streamId = findComponent("s", window.location.hash);
           const videoUrl = redditVideoUrl(
@@ -89,6 +82,24 @@
         }
 
         video.style.display = "block";
+      }
+
+      function setupVideoPlayer() {
+        const video = document.querySelector("video");
+        const audio = document.querySelector("audio");
+
+        // sync play/pause
+        video.onplay = function () {
+          audio.play();
+        };
+        video.onpause = function () {
+          audio.pause();
+        };
+
+        // sync video and audio on skip
+        video.onseeking = function () {
+          audio.currentTime = video.currentTime;
+        };
       }
 
       function onButtonClick() {
