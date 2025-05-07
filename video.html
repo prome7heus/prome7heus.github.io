@@ -1,199 +1,166 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Watch video</title>
+    <head>
+        <meta charset="utf-8" />
+        <title>Watch video</title>
 
-    <style>
-      body {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        background-color: #201d1d;
-      }
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                background-color: #201d1d;
+            }
 
-      video {
-        height: 100%;
-        display: none;
-        margin: 1rem;
-      }
+            video {
+                /* height: 100%; */
+                display: none;
+                margin: 1rem;
 
-      #get-url {
-        display: none;
-      }
-    </style>
-  </head>
-  <body>
-    <video controls autoplay>
-      <source id="videoSrc" type="video/mp4" />
-      <audio id="audioSrc" controls></audio>
+                max-width: 100vw;
+                max-height: 100vh;
+                width: 100vw;
+                height: auto;
+            }
 
-      Your browser does not support the video tag.
-    </video>
-    <div id="get-url">
-      <input type="text" id="url" placeholder="Enter video URL" />
-      <button onclick="onButtonClick()">Watch</button>
-    </div>
+            @media (orientation: landscape) {
+                video {
+                    width: auto;
+                    height: 100vh;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <video controls muted="false" volume="1">
+            <source id="videoSrc" type="video/mp4" />
+            <audio id="audioSrc" controls></audio>
 
-    <script type="text/javascript">
-      // when page loads, get the url after # and set it as the video source
-      window.onload = function () {
-        const videoSrc = window.location.hash;
+            Your browser does not support the video tag.
+        </video>
 
-        if (!videoSrc) {
-          const input = document.querySelector("#get-url");
-          input.style.display = "block";
-        } else {
-          showVideo();
-        }
-      };
+        <script type="text/javascript">
+            function getRedditIdFromHash() {
+                return window.location.hash
+                    ? window.location.hash.substring(1)
+                    : null;
+            }
 
-      function showVideo() {
-        const video = document.querySelector("video");
+            async function fetchRedditJson(id) {
+                const url = `https://www.reddit.com/${id}/.json`;
+                const resp = await fetch(url);
+                if (!resp.ok) throw new Error("Failed to fetch Reddit JSON");
+                return resp.json();
+            }
 
-        if (isSafari()) {
-          // the workaround for safari not working is to have separate audio and video tags
-          setupVideoPlayer();
+            function extractVideoAudioUrls(json) {
+                try {
+                    // Find the post object
+                    const post = json[0].data.children[0].data;
+                    // Reddit video is in post.secure_media.reddit_video
+                    const video = post.secure_media?.reddit_video;
+                    if (!video) throw new Error("No Reddit video found");
+                    const videoUrl = video.fallback_url;
+                    // Reddit does not provide audio in the video file; audio is in DASH manifest
+                    // The audio URL is usually the same as the video URL, but with "DASH_..." replaced by "DASH_audio"
+                    const audioUrl = video.fallback_url.replace(
+                        /DASH_[^\.]+/,
+                        "DASH_AUDIO_128",
+                    );
+                    return { videoUrl, audioUrl };
+                } catch (e) {
+                    throw new Error("Could not extract video/audio URLs");
+                }
+            }
 
-          const streamId = findComponent("s", window.location.hash);
-          const videoUrl = redditVideoUrl(
-            streamId,
-            findComponent("v", window.location.hash)
-          );
-          const audioUrl = redditAudioUrl(
-            streamId,
-            findComponent("a", window.location.hash)
-          );
+            // when page loads, get the url after # and set it as the video source
+            async function main() {
+                const id = getRedditIdFromHash();
+                if (!id) {
+                    console.error("No Reddit thread ID in hash!");
+                    return;
+                }
+                try {
+                    const json = await fetchRedditJson(id);
+                    const { videoUrl, audioUrl } = extractVideoAudioUrls(json);
+                    showVideo(videoUrl, audioUrl);
+                } catch (e) {
+                    console.error(e);
+                }
+            }
 
-          const videoSrc = document.querySelector("#videoSrc");
-          const audioSrc = document.querySelector("#audioSrc");
+            window.onload = main;
 
-          videoSrc.src = videoUrl;
-          audioSrc.src = audioUrl;
+            window.addEventListener("hashchange", main);
 
-          video.play();
-        } else {
-          // normal browsers...
-          video.src = decodeUrl(window.location.hash);
-        }
+            function showVideo(videoUrl, audioUrl) {
+                const video = document.querySelector("video");
+                const audio = document.querySelector("audio");
 
-        video.style.display = "block";
-      }
+                setupVideoPlayer();
 
-      function setupVideoPlayer() {
-        const video = document.querySelector("video");
-        const audio = document.querySelector("audio");
+                const videoSrc = document.querySelector("#videoSrc");
+                const audioSrc = document.querySelector("#audioSrc");
 
-        // sync play/pause
-        video.onplay = function () {
-          audio.play();
-        };
-        video.onpause = function () {
-          audio.pause();
-        };
+                video.src = videoUrl;
+                audioSrc.src = audioUrl;
 
-        // sync video and audio on skip
-        video.onseeking = function () {
-          audio.currentTime = video.currentTime;
-        };
-      }
+                // video.play();
+                video.currentTime = 0;
+                audio.currentTime = 0;
 
-      function onButtonClick() {
-        const url = document.querySelector("input").value;
-        const encodedUrl = encodeUrl(url);
-        window.location.hash = encodedUrl;
-        window.location.reload();
-      }
+                video.style.display = "block";
+            }
 
-      const redditShortUrl = (id) => `https://reddit.com/${id}/`;
-      const redditVideoUrl = (id, qual) =>
-        `https://v.redd.it/${id}/DASH_${qual}.mp4`;
-      const redditAudioUrl = (id, qual) =>
-        `https://v.redd.it/${id}/DASH_AUDIO_${qual}.mp4`;
-      const rapidSaveUrl = (permalink, videoUrl, audioUrl) =>
-        `https://sd.rapidsave.com/download.php?permalink=${permalink}&video_url=${videoUrl}&audio_url=${audioUrl}`;
+            function setupVideoPlayer() {
+                const video = document.querySelector("video");
+                const audio = document.querySelector("audio");
 
-      const isSafari = () =>
-        navigator.userAgent.toLowerCase().indexOf("safari") > -1;
+                video.muted = false;
 
-      function encodeUrl(url) {
-        const { redditId, streamId, videoVariant, audioVariant } =
-          getLinkData(url);
-        const encodedUrl = `r:${redditId},s:${streamId},v:${videoVariant},a:${audioVariant}`;
-        return encodedUrl;
-      }
+                // sync play/pause
+                video.onplay = function () {
+                    audio.play();
+                };
+                video.onpause = function () {
+                    audio.pause();
+                };
 
-      function getRedditPostId(redditUrl) {
-        const id = redditUrl.match(/comments\/([a-z0-9]+)\/.*/)[1];
-        return id;
-      }
+                // sync video and audio on skip
+                video.onseeking = function () {
+                    audio.currentTime = video.currentTime;
+                };
 
-      function getRedditStreamId(redditUrl) {
-        const url = new URL(redditUrl);
-        const id = url.pathname.split("/")[1];
-        return id;
-      }
+                video.onvolumechange = () => {
+                    audio.volume = video.volume;
+                    audio.muted = video.muted;
+                };
+            }
 
-      function getRedditStreamVariant(redditUrl) {
-        const url = new URL(redditUrl);
-        const filename = url.pathname.split("/").pop();
-        // get the quality from the filename
-        const quality = filename.split("_").pop().split(".")[0];
-        return quality;
-      }
+            const isSafari = () =>
+                navigator.userAgent.toLowerCase().indexOf("safari") > -1;
 
-      function getLinkData(link) {
-        const url = new URL(link);
-        const host = url.host;
+            function getRedditPostId(redditUrl) {
+                const id = redditUrl.match(/comments\/([a-z0-9]+)\/.*/)[1];
+                return id;
+            }
 
-        if (host.includes("rapidsave.com")) {
-          const urlParams = url.searchParams;
-          const redditId = getRedditPostId(urlParams.get("permalink"));
-          const videoUrl = urlParams.get("video_url");
-          const audioUrl = urlParams.get("audio_url");
+            function getRedditStreamId(redditUrl) {
+                const url = new URL(redditUrl);
+                const id = url.pathname.split("/")[1];
+                return id;
+            }
 
-          const streamId = getRedditStreamId(videoUrl);
-          const videoVariant = getRedditStreamVariant(videoUrl);
-          const audioVariant = getRedditStreamVariant(audioUrl);
-
-          return {
-            redditId,
-            videoUrl,
-            audioUrl,
-            streamId,
-            videoVariant,
-            audioVariant,
-          };
-        }
-
-        return link;
-      }
-
-      function findComponent(component, encodedUrl) {
-        if (encodedUrl.startsWith("#")) {
-          encodedUrl = encodedUrl.slice(1);
-        }
-
-        const split = encodedUrl.split(",");
-        const found = split.find((s) => s.startsWith(component));
-        return found.split(":")[1];
-      }
-
-      function decodeUrl(encodedUrl) {
-        const redditId = findComponent("r", encodedUrl);
-        const streamId = findComponent("s", encodedUrl);
-        const videoVariant = findComponent("v", encodedUrl);
-        const audioVariant = findComponent("a", encodedUrl);
-
-        const redditUrl = redditShortUrl(redditId);
-        const videoUrl = redditVideoUrl(streamId, videoVariant);
-        const audioUrl = redditAudioUrl(streamId, audioVariant);
-
-        return rapidSaveUrl(redditUrl, videoUrl, audioUrl);
-      }
-    </script>
-  </body>
+            function getRedditStreamVariant(redditUrl) {
+                const url = new URL(redditUrl);
+                const filename = url.pathname.split("/").pop();
+                // get the quality from the filename
+                const quality = filename.split("_").pop().split(".")[0];
+                return quality;
+            }
+        </script>
+    </body>
 </html>
