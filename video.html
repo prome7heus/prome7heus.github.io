@@ -85,6 +85,7 @@
                 }
                 try {
                     const json = await fetchRedditJson(id);
+                    document.title = json[0].data.children[0].data.title;
                     const { videoUrl, audioUrl } = extractVideoAudioUrls(json);
                     showVideo(videoUrl, audioUrl);
                 } catch (e) {
