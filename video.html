@@ -67,8 +67,8 @@
                     // Reddit does not provide audio in the video file; audio is in DASH manifest
                     // The audio URL is usually the same as the video URL, but with "DASH_..." replaced by "DASH_audio"
                     const audioUrl = video.fallback_url.replace(
-                        /DASH_[^\.]+/,
-                        "DASH_AUDIO_128",
+                        /(DASH|CMAF)_[^\.]+/,
+                        "$1_AUDIO_128"
                     );
                     return { videoUrl, audioUrl };
                 } catch (e) {
